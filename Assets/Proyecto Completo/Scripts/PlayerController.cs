@@ -4,16 +4,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-	[SerializeField]
-	private Rigidbody rb;
-	[SerializeField]
-	private float speed;
+	[SerializeField] private float speed;
 
-	[SerializeField]
-	private float jump;
-	Vector3 rotar;
-	[SerializeField]
-	private Vector3 movement;
+	[SerializeField] private float jump;
+
+	private Rigidbody rb;
+	[SerializeField]	private Animator anim;
 	private float deltaSpeed;
 	private float deltaJump;
 	private float h;
@@ -24,11 +20,13 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rb=GetComponent<Rigidbody>();	
+		anim.GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		GetInput();
+		Debug.Log(canJump);
 	}
 
 
@@ -48,6 +46,9 @@ public class PlayerController : MonoBehaviour {
 		if(Input.GetButton("Jump")&&canJump){
 			deltaJump=jump*Time.deltaTime;
 			rb.velocity=new Vector3(rb.velocity.x,deltaJump,rb.velocity.z);
+			anim.SetBool("Jump",true);
+		}else{
+			anim.SetBool("Jump",false);
 		}
 	}
 
@@ -59,10 +60,15 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if(h!=0 || v!=0){
+
 			
-			rb.velocity=(((v*transform.forward) +( h*transform.right))*deltaSpeed)+(transform.up*rb.velocity.y);
-			
+			rb.velocity=(((v*transform.forward) +( h*transform.right))*deltaSpeed);
+
+		}else{
+			rb.velocity=Vector3.zero+transform.up*rb.velocity.y;
 		}
+		anim.SetFloat("HVSpeed",rb.velocity.magnitude);
+
 	}
 
 	void Girar(){
