@@ -20,11 +20,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4932306407193226}
   - component: {fileID: 33032561203654372}
-  - component: {fileID: 65140979975235894}
   - component: {fileID: 23500100958250198}
+  - component: {fileID: 135920339531868876}
   m_Layer: 0
   m_Name: coin
-  m_TagString: Key
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56,7 +56,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 5d38871b33d2bff44a02532b48745e0f, type: 2}
+  - {fileID: 2100000, guid: 353e51de8269ac349a80b49c81fff3b3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -82,9 +82,9 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1477449080113222}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &65140979975235894
-BoxCollider:
+  m_Mesh: {fileID: 4300000, guid: 16eb0c8300d556b4383d6b8c324f05de, type: 3}
+--- !u!135 &135920339531868876
+SphereCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -93,5 +93,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}

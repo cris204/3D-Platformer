@@ -32,7 +32,10 @@ public class PlayerStats : MonoBehaviour {
 		staminaImage.fillAmount=stamina;
 		coinsTxt.text=coins.ToString();
 	}
-
+	
+	public void MoreCoins(){
+		coins++;
+	}
 	public void LessStamina(){
 		if(stamina>=0){
 			stamina-=0.01f;

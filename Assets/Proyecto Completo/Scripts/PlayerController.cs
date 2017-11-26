@@ -15,7 +15,11 @@ public class PlayerController : MonoBehaviour {
 	private float h;
 	private float v;
 	private bool run;
+	private bool hit;
 	private bool canJump;
+
+	[SerializeField] private Collider leftSword;
+	[SerializeField] private Collider rightSword;
 
 	// Use this for initialization
 	void Start () {
@@ -34,16 +38,18 @@ public class PlayerController : MonoBehaviour {
 		Girar();
 		Move();
 		Jump();
+		Hit();
 	}
 	void GetInput(){
 		h=Input.GetAxis("Horizontal");
 		v=Input.GetAxis("Vertical");
 		run=Input.GetButton("Run");
+		hit=Input.GetButton("Hit");
 	}
 
 	void Jump(){
 
-		if(Input.GetButton("Jump")&&canJump){
+		if(Input.GetButton("Jump")&&canJump&&!hit){
 			deltaJump=jump*Time.deltaTime;
 			rb.velocity=new Vector3(rb.velocity.x,deltaJump,rb.velocity.z);
 			anim.SetBool("Jump",true);
@@ -52,9 +58,19 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	void Hit(){
+		if(hit){
+			anim.SetBool("Hit",true);
+			leftSword.enabled=true;
+			rightSword.enabled=true;
+		}else{
+			anim.SetBool("Hit",false);
+		}
+	}
+
 	void Move(){
 
-
+		PlayerStats.Instance.MoreStamina();
 		if(h!=0 || v!=0){
 
 		if(run && PlayerStats.Instance.stamina > 0){
@@ -64,7 +80,7 @@ public class PlayerController : MonoBehaviour {
 		}else{
 			
 			deltaSpeed=speed*Time.deltaTime;
-			PlayerStats.Instance.MoreStamina();
+			
 		}
 
 		rb.velocity=((((v*transform.forward) +( h*transform.right))*deltaSpeed)+Vector3.up*rb.velocity.y);
@@ -98,12 +114,28 @@ public class PlayerController : MonoBehaviour {
 		
 		yield return new WaitForSeconds(2);
 		canJump=true;
+
+	}
+
+	public void SwordOff(){ //se llama en un metodo en una animacion
+		leftSword.enabled=false;
+		rightSword.enabled=false;
 	}
 
 	void OnTriggerEnter(Collider other)
 	{
-		if(other.gameObject.tag=="Key"){
-			Debug.Log("recoger");
+		if(other.gameObject.tag=="Enemy"){
+			other.GetComponent<Health>().TakeDamage();
+		}
+	}
+
+	void OnTriggerStay(Collider other)
+	{
+		if(other.gameObject.tag=="Coin"){
+			if(Input.GetButtonDown("Recoger")){
+				PlayerStats.Instance.MoreCoins();
+				other.gameObject.SetActive(false);
+			}
 		}
 	}
 }
