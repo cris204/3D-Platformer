@@ -53,16 +53,18 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Move(){
-		if(run){
+		if(run&&PlayerStats.Instance.stamina > 0){
 			deltaSpeed=speed*2*Time.deltaTime;
+			PlayerStats.Instance.LessStamina();
 		}else{
 			deltaSpeed=speed*Time.deltaTime;
+			PlayerStats.Instance.MoreStamina();
 		}
 
 		if(h!=0 || v!=0){
 
 			
-			rb.velocity=(((v*transform.forward) +( h*transform.right))*deltaSpeed);
+		rb.velocity=((((v*transform.forward) +( h*transform.right))*deltaSpeed)+Vector3.up*rb.velocity.y);
 
 		}else{
 			rb.velocity=Vector3.zero+transform.up*rb.velocity.y;
