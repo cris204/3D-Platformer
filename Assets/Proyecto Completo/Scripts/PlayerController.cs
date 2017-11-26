@@ -10,7 +10,11 @@ public class PlayerController : MonoBehaviour {
 	private float speed;
 	[SerializeField]
 	private float jump;
-
+	Vector3 rotar;
+	[SerializeField]
+	private Vector3 movement;
+	private float deltaSpeed;
+	private float deltaJump;
 	private float h;
 	private float v;
 	// Use this for initialization
@@ -20,13 +24,12 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
 		GetInput();
-		
 	}
 
-	void FixedUpdate()
-	{
+
+	void FixedUpdate(){
+		Girar();
 		Move();
 		Jump();
 	}
@@ -36,24 +39,21 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Jump(){
+
 		if(Input.GetButton("Jump")){
-			rb.velocity=new Vector3(rb.velocity.x,jump,rb.velocity.z);
+			deltaJump=jump*Time.deltaTime;
+			rb.velocity=new Vector3(rb.velocity.x,deltaJump,rb.velocity.z);
 		}
 	}
 
 	void Move(){
-
-		if(h>0){
-			rb.velocity=new Vector3(speed,rb.velocity.y,rb.velocity.z);
-		}else if(h<0){
-			rb.velocity=new Vector3(-speed,rb.velocity.y,rb.velocity.z);
-		}
-
-		if(v>0){
-			rb.velocity=new Vector3(rb.velocity.x,rb.velocity.y,speed);
-		}else if(v<0){
-			rb.velocity=new Vector3(rb.velocity.x,rb.velocity.y,-speed);
+		if(h!=0 || v!=0){
+			deltaSpeed=speed*Time.deltaTime;
+			rb.velocity=(v*transform.forward + h*transform.right+transform.up*rb.velocity.y)*deltaSpeed;
 		}
 	}
 
+	void Girar(){
+		transform.rotation = Quaternion.Euler (0f, Input.mousePosition.x , 0f);
+	}
 }
