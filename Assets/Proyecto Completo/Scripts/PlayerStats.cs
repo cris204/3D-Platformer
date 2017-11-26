@@ -34,11 +34,13 @@ public class PlayerStats : MonoBehaviour {
 	}
 
 	public void LessStamina(){
-		stamina-=0.01f;
+		if(stamina>=0){
+			stamina-=0.01f;
+		}
 	}
 	public void MoreStamina(){
 		if(stamina<=1){
-		stamina+=0.01f;
+			stamina+=0.005f;
 		}
 	}
 

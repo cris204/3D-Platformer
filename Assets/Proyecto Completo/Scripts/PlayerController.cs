@@ -53,17 +53,20 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Move(){
-		if(run&&PlayerStats.Instance.stamina > 0){
+
+
+		if(h!=0 || v!=0){
+
+		if(run && PlayerStats.Instance.stamina > 0){
+
 			deltaSpeed=speed*2*Time.deltaTime;
 			PlayerStats.Instance.LessStamina();
 		}else{
+			
 			deltaSpeed=speed*Time.deltaTime;
 			PlayerStats.Instance.MoreStamina();
 		}
 
-		if(h!=0 || v!=0){
-
-			
 		rb.velocity=((((v*transform.forward) +( h*transform.right))*deltaSpeed)+Vector3.up*rb.velocity.y);
 
 		}else{
@@ -79,14 +82,28 @@ public class PlayerController : MonoBehaviour {
 
 	void OnCollisionEnter(Collision other)
 	{
-		if(other.gameObject.tag=="Terrain"){
-			canJump=true;
+		if(other.gameObject.tag=="Terrain" && !canJump){
+			StartCoroutine(wait());
 		}
 	}
 	void OnCollisionExit(Collision other)
 	{
 		if(other.gameObject.tag=="Terrain"){
 			canJump=false;
+		}
+	}
+	
+	public IEnumerator wait()
+	{
+		
+		yield return new WaitForSeconds(2);
+		canJump=true;
+	}
+
+	void OnTriggerEnter(Collider other)
+	{
+		if(other.gameObject.tag=="Key"){
+			Debug.Log("recoger");
 		}
 	}
 }
